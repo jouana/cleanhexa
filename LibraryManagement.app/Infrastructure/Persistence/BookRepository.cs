@@ -1,7 +1,9 @@
-using LibraryManagement.app.BookManagement.Adapter.Secondary.Provider;
-using LibraryManagement.app.BookManagement.Adapter.Secondary.Provider.Entity;
+using LibraryManagement.app.Domain.Entities;
+using LibraryManagement.app.Domain.Repositories;
+using LibraryManagement.app.Infrastructure.Persistence.Sql;
+using LibraryManagement.app.Infrastructure.Persistence.Sql.Entities;
 
-namespace LibraryManagement.app.BookManagement.Adapter.Secondary;
+namespace LibraryManagement.app.Infrastructure.Persistence;
 
 public class BookRepository(IBookDao dao) : IBookRepository
 {
@@ -12,7 +14,7 @@ public class BookRepository(IBookDao dao) : IBookRepository
             .withTitle(book.Title)
             .withAuthorId(book.Author.Id)
             .build();
-        
+
         dao.Add(entity);
     }
 

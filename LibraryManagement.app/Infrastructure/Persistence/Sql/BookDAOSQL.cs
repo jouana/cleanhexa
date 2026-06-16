@@ -1,4 +1,6 @@
-namespace LibraryManagement.app.BookManagement.Adapter.Secondary.Provider.Entity;
+using LibraryManagement.app.Infrastructure.Persistence.Sql.Entities;
+
+namespace LibraryManagement.app.Infrastructure.Persistence.Sql;
 
 public class BookDAOSQL : IBookDao
 {
@@ -6,7 +8,7 @@ public class BookDAOSQL : IBookDao
     {
         throw new NotImplementedException();
     }
-    
+
     public bool IsbnAlreadyExist(int bookIsbn)
     {
         throw new NotImplementedException();

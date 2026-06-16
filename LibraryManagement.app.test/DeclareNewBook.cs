@@ -1,107 +1,103 @@
-﻿using LibraryManagement.app.BookManagement.Adapter.Primary;
-using LibraryManagement.app.BookManagement.Adapter.Primary.Resource;
-using LibraryManagement.app.BookManagement.Adapter.Secondary;
-using LibraryManagement.app.BookManagement.Adapter.Secondary.Provider;
-using LibraryManagement.app.BookManagement.Adapter.Secondary.Provider.Entity;
+using LibraryManagement.app.Application.UseCases;
+using LibraryManagement.app.Infrastructure.Persistence;
+using LibraryManagement.app.Infrastructure.Persistence.Sql;
+using LibraryManagement.app.Infrastructure.Persistence.Sql.Entities;
+using LibraryManagement.app.Presentation.Controllers;
+using LibraryManagement.app.Presentation.Requests;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.app.test;
 
 public class DeclareNewBook
 {
-    private BookRestController initSut(BookDAOStub bookDao)
+    private BookController initSut(BookDAOStub bookDao)
     {
         IAuthorDao authorDao = new AuthorDaoStub();
         BookRepository bookRepository = new BookRepository(bookDao);
         AuthorRepository authorRepository = new AuthorRepository(authorDao);
-        BookService bookService = new BookService(bookRepository, authorRepository);
-        return new BookRestController(bookService);
-
+        RegisterBookUseCase registerBookUseCase = new RegisterBookUseCase(bookRepository, authorRepository);
+        return new BookController(registerBookUseCase);
     }
-    
-    
+
     [Fact]
     public void When_OK_Then_ISBN_Saved()
     {
         BookDAOStub bookDao = new BookDAOStub();
-        BookRestController bookRestController = initSut(bookDao);
-        BookResource resource = new BookResource()
+        BookController bookController = initSut(bookDao);
+        CreateBookRequest request = new CreateBookRequest()
         {
             ISBN = 123456789,
             AuthorId = 1,
             Title = "asitrau"
         };
-        
 
-        bookRestController.Create(resource);
-        
-        Assert.Equal(bookDao.Books[0].ISBN, resource.ISBN);
+        bookController.Create(request);
+
+        Assert.Equal(bookDao.Books[0].ISBN, request.ISBN);
     }
-    
-    
+
     [Fact]
     public void When_OK_Then_Title_Saved()
     {
         BookDAOStub bookDao = new BookDAOStub();
-        BookRestController bookRestController = initSut(bookDao);
-        BookResource resource = new BookResource()
+        BookController bookController = initSut(bookDao);
+        CreateBookRequest request = new CreateBookRequest()
         {
             ISBN = 123456789,
             AuthorId = 1,
             Title = "asitrau"
         };
-        
-        bookRestController.Create(resource);
-        
-        Assert.Equal(bookDao.Books[0].Title, resource.Title);
+
+        bookController.Create(request);
+
+        Assert.Equal(bookDao.Books[0].Title, request.Title);
     }
-    
+
     [Fact]
     public void When_OK_Then_Author_Saved()
     {
         BookDAOStub bookDao = new BookDAOStub();
-        BookRestController bookRestController = initSut(bookDao);
-        BookResource resource = new BookResource()
+        BookController bookController = initSut(bookDao);
+        CreateBookRequest request = new CreateBookRequest()
         {
             ISBN = 123456789,
             AuthorId = 1,
             Title = "asitrau"
         };
-        
-        bookRestController.Create(resource);
-        
-        Assert.Equal(bookDao.Books[0].AuthorId, resource.AuthorId);
+
+        bookController.Create(request);
+
+        Assert.Equal(bookDao.Books[0].AuthorId, request.AuthorId);
     }
-    
 
     [Fact]
     public void When_ISBN_already_exist_then_Error()
     {
         BookDAOStub bookDao = new BookDAOStub(true);
-        BookRestController bookRestController = initSut(bookDao);
-        BookResource resource = new BookResource()
+        BookController bookController = initSut(bookDao);
+        CreateBookRequest request = new CreateBookRequest()
         {
             ISBN = 123456789,
         };
-        
-        Assert.Throws<Exception>(() => bookRestController.Create(resource));
+
+        IActionResult result = bookController.Create(request);
+
+        Assert.IsType<ConflictObjectResult>(result);
     }
 }
 
 internal class AuthorDaoStub : IAuthorDao
 {
-    public AuthorEntity FindOneById(int commandAuthorId)
+    public AuthorEntity FindOneById(int authorId)
     {
-        return new AuthorEntity()
-        {
-            Id = 1
-        };
+        return new AuthorEntity() { Id = 1 };
     }
 }
 
 public class BookDAOStub(bool isbnExist = false) : IBookDao
 {
     public IList<BookEntity> Books { get; } = new List<BookEntity>();
-    
+
     public void Add(BookEntity book)
     {
         Books.Add(book);
