@@ -2,6 +2,12 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2c3d7466_002Dfacf_002D4fba_002Dbf8b_002Df260ac7cadfe/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="DeclareNewBook" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::2A0BA099-F29E-477C-8F7C-CFF704778DFD::net10.0::LibraryManagement.app.test.DeclareNewBook&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::2A0BA099-F29E-477C-8F7C-CFF704778DFD::net10.0::LibraryManagement.app.test.Features.DeclareNewBookFeature&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a72efe94_002D96c0_002D4c1d_002D8eac_002Da92ae88a7e38/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Register a book with valid data saves the ISBN" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::2A0BA099-F29E-477C-8F7C-CFF704778DFD::net10.0::LibraryManagement.app.test.Features.DeclareNewBookFeature&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>
