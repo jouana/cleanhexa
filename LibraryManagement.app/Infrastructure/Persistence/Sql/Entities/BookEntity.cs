@@ -1,10 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace LibraryManagement.app.Infrastructure.Persistence.Sql.Entities;
 
 public class BookEntity
 {
-    public int ISBN;
-    public string Title;
-    public int AuthorId;
+    [Key]
+    public int ISBN { get; set; }
+    public string Title { get; set; }
+    public int AuthorId { get; set; }
 
     public static BookEntityBuilder Builder => new BookEntityBuilder();
 

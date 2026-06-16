@@ -3,11 +3,12 @@ using LibraryManagement.app.Application.Presenters;
 using LibraryManagement.app.Domain.Entities;
 using LibraryManagement.app.Domain.Repositories;
 
-namespace LibraryManagement.app.Application.UseCases;
+namespace LibraryManagement.app.Application.Handlers;
 
-public class RegisterBookUseCase(IBookRepository bookRepository, IAuthorRepository authorRepository)
+public class RegisterBookCommandHandler(IBookRepository bookRepository, IAuthorRepository authorRepository)
+    : ICommandHandler<RegisterBookCommand, IRegisterBookPresenter>
 {
-    public void Execute(RegisterBookCommand command, IRegisterBookPresenter presenter)
+    public void Handle(RegisterBookCommand command, IRegisterBookPresenter presenter)
     {
         if (bookRepository.IsbnAlreadyExist(command.ISBN))
         {

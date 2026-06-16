@@ -1,10 +1,14 @@
-using LibraryManagement.app.Application.UseCases;
+using LibraryManagement.app.Application.Commands;
+using LibraryManagement.app.Application.Handlers;
+using LibraryManagement.app.Application.Presenters;
+using LibraryManagement.app.Application.Queries;
 using LibraryManagement.app.Infrastructure.Persistence;
 using LibraryManagement.app.Infrastructure.Persistence.Sql;
 using LibraryManagement.app.Infrastructure.Persistence.Sql.Entities;
 using LibraryManagement.app.Presentation.Controllers;
 using LibraryManagement.app.Presentation.Requests;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.app.test;
 
@@ -15,8 +19,16 @@ public class DeclareNewBook
         IAuthorDao authorDao = new AuthorDaoStub();
         BookRepository bookRepository = new BookRepository(bookDao);
         AuthorRepository authorRepository = new AuthorRepository(authorDao);
-        RegisterBookUseCase registerBookUseCase = new RegisterBookUseCase(bookRepository, authorRepository);
-        return new BookController(registerBookUseCase);
+        ICommandHandler<RegisterBookCommand, IRegisterBookPresenter> commandHandler =
+            new RegisterBookCommandHandler(bookRepository, authorRepository);
+
+        var db = new LibraryDbContext(new DbContextOptionsBuilder<LibraryDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options);
+        IQueryHandler<GetBookByISBNQuery, BookReadModel?> queryHandler =
+            new GetBookByISBNQueryHandler(db);
+
+        return new BookController(commandHandler, queryHandler);
     }
 
     [Fact]
