@@ -28,7 +28,7 @@ public class DeclareNewBook
         IQueryHandler<GetBookByISBNQuery, BookReadModel?> queryHandler =
             new GetBookByISBNQueryHandler(db);
 
-        return new BookController(commandHandler, queryHandler);
+        return new BookController(commandHandler, null!, queryHandler);
     }
 
     [Fact]
@@ -118,5 +118,10 @@ public class BookDAOStub(bool isbnExist = false) : IBookDao
     public bool IsbnAlreadyExist(int bookIsbn)
     {
         return isbnExist;
+    }
+
+    public BookEntity? FindByIsbn(int isbn)
+    {
+        return Books.FirstOrDefault(b => b.ISBN == isbn);
     }
 }

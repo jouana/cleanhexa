@@ -11,6 +11,7 @@ namespace LibraryManagement.app.Presentation.Controllers;
 [Route("api/books")]
 public class BookController(
     ICommandHandler<RegisterBookCommand, IRegisterBookPresenter> registerBookHandler,
+    ICommandHandler<PutBookAwayCommand, IPutBookAwayPresenter> putBookAwayHandler,
     IQueryHandler<GetBookByISBNQuery, BookReadModel?> getBookByISBNHandler) : ControllerBase
 {
     [HttpPost]
@@ -29,6 +30,19 @@ public class BookController(
             return Conflict(presenter.ErrorMessage);
 
         return Created();
+    }
+
+    [HttpPut("{isbn}/shelf")]
+    public IActionResult PutAway(int isbn, [FromBody] PutBookAwayRequest request)
+    {
+        var command = new PutBookAwayCommand { Isbn = isbn, Row = request.Row, Shelf = request.Shelf };
+        var presenter = new PutBookAwayPresenter();
+        putBookAwayHandler.Handle(command, presenter);
+
+        if (!presenter.IsSuccess)
+            return BadRequest(presenter.ErrorMessage);
+
+        return NoContent();
     }
 
     [HttpGet("{isbn}")]

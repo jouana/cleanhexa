@@ -17,7 +17,9 @@ builder.Services.AddScoped<IBookDao, BookDAOSQL>();
 builder.Services.AddScoped<IAuthorDao, AuthorDAOSQL>();
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddSingleton<ILibraryRepository, InMemoryLibraryRepository>();
 builder.Services.AddScoped<ICommandHandler<RegisterBookCommand, IRegisterBookPresenter>, RegisterBookCommandHandler>();
+builder.Services.AddScoped<ICommandHandler<PutBookAwayCommand, IPutBookAwayPresenter>, PutBookAwayHandler>();
 builder.Services.AddScoped<IQueryHandler<GetBookByISBNQuery, BookReadModel?>, GetBookByISBNQueryHandler>();
 
 var app = builder.Build();

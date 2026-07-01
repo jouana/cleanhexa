@@ -34,7 +34,7 @@ public class DeclareNewBookSteps
         IQueryHandler<GetBookByISBNQuery, BookReadModel?> queryHandler =
             new GetBookByISBNQueryHandler(db);
 
-        return new BookController(commandHandler, queryHandler);
+        return new BookController(commandHandler, null!, queryHandler);
     }
 
     [Given("a book with ISBN {int}, title {string} and author {int}")]

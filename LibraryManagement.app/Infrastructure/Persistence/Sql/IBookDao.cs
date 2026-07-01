@@ -6,4 +6,5 @@ public interface IBookDao
 {
     void Add(BookEntity book);
     bool IsbnAlreadyExist(int bookIsbn);
+    BookEntity? FindByIsbn(int isbn);
 }

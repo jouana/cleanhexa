@@ -6,4 +6,5 @@ public interface IBookRepository
 {
     void Add(Book book);
     bool IsbnAlreadyExist(int bookIsbn);
+    Book FindByIsbn(int commandIsbn);
 }

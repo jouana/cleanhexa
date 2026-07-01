@@ -13,4 +13,9 @@ public class BookDAOSQL : IBookDao
     {
         throw new NotImplementedException();
     }
+
+    public BookEntity? FindByIsbn(int isbn)
+    {
+        throw new NotImplementedException();
+    }
 }

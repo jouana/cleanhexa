@@ -22,4 +22,17 @@ public class BookRepository(IBookDao dao) : IBookRepository
     {
         return dao.IsbnAlreadyExist(bookIsbn);
     }
+
+    public Book FindByIsbn(int isbn)
+    {
+        var entity = dao.FindByIsbn(isbn)
+            ?? throw new KeyNotFoundException($"Book with ISBN {isbn} not found.");
+
+        Book book = Book.Builder()
+            .withISBN(entity.ISBN)
+            .withTitle(entity.Title)
+            .build();
+        book.AssignAuthor(Author.builder.withId(entity.AuthorId).build());
+        return book;
+    }
 }
